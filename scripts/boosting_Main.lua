@@ -44,7 +44,6 @@ function Functions.Start()
 						UI_Functions.EnableAutoFarm(true)
 					end
 				end
-
 			elseif not Values.Boosting then
 				Values.Rounds = 0
 			end
