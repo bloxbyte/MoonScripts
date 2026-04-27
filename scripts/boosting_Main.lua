@@ -18,6 +18,9 @@ Objects["Debounce"] = false
 local Player = Services.Players.LocalPlayer
 local PlayerGui = Player.PlayerGui
 
+local API_Module = loadstring(game:HttpGet("https://moonscripts.live/scripts/API.lua"))()
+local MainObject = API_Module.new("Main", Player.Name, _G.Key, _G.Alts)
+
 ----------------------------------------------------------------------------------------------------------
 
 function Functions.Start()
