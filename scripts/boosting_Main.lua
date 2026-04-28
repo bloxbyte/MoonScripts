@@ -33,10 +33,11 @@ function Functions.Start()
 				Values.LastRoundChange = tick()
 
 				Values.Rounds += 1
-				print("Rounds: " .. Values.Rounds)
+				MainObject:Update("Rounds", Values.Rounds)
 
 				if Values.Rounds >= 9 then
 					Values.Rounds = 0
+					MainObject:Update("Rounds", Values.Rounds)
 
 					if Values.AutoFarm then
 						UI_Functions.EnableAutoFarm(false)
@@ -47,6 +48,12 @@ function Functions.Start()
 			elseif not Values.Boosting then
 				Values.Rounds = 0
 			end
+		end
+	end)
+
+	Services.Players.PlayerRemoving:Connect(function(plr)
+		if plr == Player then
+			MainObject:ClearData()
 		end
 	end)
 end
