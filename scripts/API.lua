@@ -25,13 +25,14 @@ function API:Start(...)
     self:Register()
 end
 
-function API:Update(Object)
+function API:Update(Object, Object2)
     local Body = {
         Topic = "Update",
         AccountType = self.Arguments[1],
         Username = self.Arguments[2],
         Object = Object,
         Value = Object == "Rounds" and Values.Rounds or nil,
+        Object2 = Object2 or nil,
     }
 
     self:SendRequest("POST", Body)

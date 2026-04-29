@@ -5,7 +5,7 @@ local Services, Values, Functions, UI_Functions, Loops, Objects = {
 	Workspace = game:GetService("Workspace"),
 }, {
 	AutoFarm = false,
-	Boosting = false,
+	Boosting = true,
 
 	Rounds = 0,
 	LastRoundChange = 0,
@@ -45,8 +45,6 @@ function Functions.Start()
 						UI_Functions.EnableAutoFarm(true)
 					end
 				end
-			elseif not Values.Boosting then
-				Values.Rounds = 0
 			end
 		end
 	end)
@@ -118,6 +116,7 @@ function Functions.DisableCollisions()
 				v.CanCollide = false
 			end
 		end
+
 		Services.RunService.Stepped:Wait()
 	end
 end
@@ -148,6 +147,7 @@ function Functions.HandleCharacter(character)
 		Loops.AutoFarm_Velocity = Services.RunService.Stepped:Connect(function()
 			if Values.AutoFarm and Values.Rounds < 8 then
 				local hrp = character:FindFirstChild("HumanoidRootPart")
+
 				if hrp then
 					hrp.Velocity = Vector3.new(0, 0, 0)
 				end
@@ -163,7 +163,7 @@ function UI_Functions.EnableAutoFarm(Value)
 
 	if Value then
 		Values.OldFallenPartsDestroyHeight = Services.Workspace.FallenPartsDestroyHeight
-		Services.Workspace.FallenPartsDestroyHeight = 0/0 -- NaN safer than math.huge trick
+		Services.Workspace.FallenPartsDestroyHeight = 0/0 -- NaN safer than math.huge
 
 		task.spawn(Functions.TweenToTarget)
 		task.spawn(Functions.AdjustCamera)
