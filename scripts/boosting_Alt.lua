@@ -19,8 +19,6 @@ local PlayerGui = Player.PlayerGui
 local API_Module = loadstring(game:HttpGet("https://moonscripts.live/scripts/API.lua"))()
 local AltObject = API_Module.new("Alt", Player.Name, _G.Key, _G.MainAccount)
 
-Objects["Debounce"] = false
-
 ----------------------------------------------------------------------------------------------------------
 
 function Functions.Start()
@@ -151,18 +149,6 @@ function Functions.HandleCharacter(character)
 		end)
 	end
 end
-
-----------------------------------------------------------------------------------------------------------
-
-Service.RunService.Heartbeat:Connect(function()
-    if Objects["Debounce"] then return end
-
-    Objects["Debounce"] = true
-    mouse1click()
-
-    task.wait(360)
-    Objects["Debounce"] = false
-end)
 
 ----------------------------------------------------------------------------------------------------------
 

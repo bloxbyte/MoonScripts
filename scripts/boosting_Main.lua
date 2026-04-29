@@ -13,8 +13,6 @@ local Services, Values, Functions, UI_Functions, Loops, Objects = {
 	OldFallenPartsDestroyHeight = 0,
 }, {}, {}, {}, {}
 
-Objects["Debounce"] = false
-
 local Player = Services.Players.LocalPlayer
 local PlayerGui = Player.PlayerGui
 
@@ -234,18 +232,6 @@ Rayfield:Notify({
 Objects["MainTab"] = Window:CreateTab("Main", "app-window")
 
 
-
-----------------------------------------------------------------------------------------------------------
-
-Service.RunService.Heartbeat:Connect(function()
-    if Objects["Debounce"] then return end
-
-    Objects["Debounce"] = true
-    mouse1click()
-
-    task.wait(360)
-    Objects["Debounce"] = false
-end)
 
 ----------------------------------------------------------------------------------------------------------
 
