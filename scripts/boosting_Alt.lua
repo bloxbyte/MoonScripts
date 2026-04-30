@@ -50,7 +50,25 @@ function Functions.Start()
                         task.wait()
                     until Target.Visible == true and Services.Players:FindFirstChild(Target.Text)
 
-                    AltObject:Update("Target", Player.Name, Target.Text)
+                    AltObject:Update("Target", Target.Text)
+                    local Players = AltObject:Get("Players")
+
+                    local Index = Functions.FindInTable(Players)
+
+                    if Number and Target.Visble == true then
+                        local Assassin = Players[Index].Assassin
+
+                        if Functions.IsPlayerDead(Assassin) then return end
+                        if Index <= 1 and not Functions.IsPlayerDead(Players[Index - 1].Assassin) then return end
+
+                        Functions.TweenToTarget(Assassin))
+                        Functions.AdjustCamera(Assassin)
+                        Functions.DisableCollisions()
+                        Functions.StabEnemy(Assassin)
+
+                        task.wait(1)
+                        Loops.Collisions:Disconnect()
+                    end
                 end
             end
         end
@@ -61,6 +79,22 @@ function Functions.Start()
             Player:Kick("Main account left the game, boosting stopped.")
         end
     end)
+end
+
+----------------------------------------------------------------------------------------------------------
+
+function Functions.FindInTable(Table)
+    for Index, Value in pairs(Table) do
+        if Value.Player == Player.Name then
+            return Index
+        end
+    end
+
+    return nil
+end
+
+function Functions.IsPlayerDead(Name)
+
 end
 
 ----------------------------------------------------------------------------------------------------------

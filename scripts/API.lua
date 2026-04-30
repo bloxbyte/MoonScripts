@@ -25,15 +25,19 @@ function API:Start(...)
     self:Register()
 end
 
-function API:Update(Object, Object2)
+function API:Update(Object, Value)
     local Body = {
         Topic = "Update",
+        MainAccount = self.Arguments[1] == "Main" and self.Arguments[2] or self.Arguments[4],
         AccountType = self.Arguments[1],
         Username = self.Arguments[2],
         Object = Object,
-        Value = Object == "Rounds" and Values.Rounds or nil,
-        Object2 = Object2 or nil,
+        Value = Object == "Target" or Object == "Rounds" and Value or nil,
     }
+
+    if Object == "Target" and self.Arguments[1] == "Main"  then
+        Body.AccountType = "Alt"
+    end
 
     self:SendRequest("POST", Body)
 end 
@@ -41,7 +45,7 @@ end
 function API:ClearData()
     local Body = {
         Topic = "ClearData",
-        Username = self.Arguments[2],
+        MainAccount = self.Arguments[1] == "Main" and self.Arguments[2] or self.Arguments[4],
     }
 
     self:SendRequest("POST", Body)
@@ -52,6 +56,7 @@ function API:Get(Name)
         Topic = "Get",
         AccountType = self.Arguments[1],
         Username = self.Arguments[2],
+        MainAccount = self.Arguments[1] == "Main" and self.Arguments[2] or self.Arguments[4],
         Data = Name,
     }
 

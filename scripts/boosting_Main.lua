@@ -122,7 +122,7 @@ end
 function Functions.StabEnemy()
 	while Values.AutoFarm and Values.Rounds < 8 do
 		task.wait()
-z
+
 		if Player.PlayerGui.ScreenGui.UI.Target.Visible then
 			local Enemy = Player.PlayerGui.ScreenGui.UI.Target.TargetText.Text
 			local enemyHRP = Services.Workspace:FindFirstChild(Enemy) and Services.Workspace[Enemy]:FindFirstChild("HumanoidRootPart")
