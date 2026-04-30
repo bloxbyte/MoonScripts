@@ -94,7 +94,15 @@ function Functions.FindInTable(Table)
 end
 
 function Functions.IsPlayerDead(Name)
+    local POSITION = Vector3.new(2190.5166, 568.840149, -9.46000004)
 
+    local Character = Services.Workspace:FindFirstChild(Name)
+    if not Character then return true end
+
+    local HRP = Character:FindFirstChild("HumanoidRootPart")
+    if not HRP then return true end
+
+    return (HRP.Position - POSITION).Magnitude < 150
 end
 
 ----------------------------------------------------------------------------------------------------------

@@ -214,7 +214,7 @@ local Window = Rayfield:CreateWindow({
    DisableBuildWarnings = false, 
 
    ConfigurationSaving = {
-      Enabled = true,
+      Enabled = false,
       FolderName = "Moon",
       FileName = "MoonScripts_Boosting"
    },
@@ -229,11 +229,42 @@ Rayfield:Notify({
 
 ----------------------------------------------------------------------------------------------------------
 
+Rayfield:Notify({
+   Title = "Boosting Bot",
+   Content = "Waiting for all acounts to load and join the game.",
+   Duration = 10,
+   Image = "moon",
+})
+
+function Functions.AllAltsInGame()
+    for _, Alt in ipairs(_G.Alts) do
+        if not Services.Players:FindFirstChild(Alt) then
+            return false
+        end
+    end
+	
+    return true
+end
+
+repeat
+    task.wait()
+until Functions.AllAltsInGame()
+
+----------------------------------------------------------------------------------------------------------
+
 Objects["MainTab"] = Window:CreateTab("Main", "app-window")
 
-
+Objects["BoostingToggle"] = Tab:CreateToggle({
+   Name = "Enable Boosting",
+   CurrentValue = false,
+   Flag = "Boosting_Nigger", 
+   Callback = function(Value)
+		Values.Boosting = Value
+		UI_Functions.EnableAutoFarm(Value)
+   end,
+})
 
 ----------------------------------------------------------------------------------------------------------
 
 Functions.Start()
-UI_Module:LoadConfiguration()
+--UI_Module:LoadConfiguration()
