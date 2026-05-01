@@ -200,7 +200,7 @@ end
 
 local UI_Module = loadstring(game:HttpGet("https://sirius.menu/rayfield"))()
 
-local Window = Rayfield:CreateWindow({
+local Window = UI_Module:CreateWindow({
    Name = "MoonScripts - Boosting Bot",
    Icon = 0, 
    LoadingTitle = "MoonScripts",
@@ -220,7 +220,7 @@ local Window = Rayfield:CreateWindow({
    },
 })
 
-Rayfield:Notify({
+UI_Module:Notify({
    Title = "Main Account Script",
    Content = "Only enable boosting if you have all your accounts in the game and you have the right account with the main script.",
    Duration = 3,
@@ -229,7 +229,7 @@ Rayfield:Notify({
 
 ----------------------------------------------------------------------------------------------------------
 
-Rayfield:Notify({
+UI_Module:Notify({
    Title = "Boosting Bot",
    Content = "Waiting for all acounts to load and join the game.",
    Duration = 10,
