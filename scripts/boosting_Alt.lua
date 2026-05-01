@@ -61,7 +61,7 @@ function Functions.Start()
                         if Functions.IsPlayerDead(Assassin) then return end
                         if Index > 1 and not Functions.IsPlayerDead(Players[Index - 1].Assassin) then return end
 
-                        Functions.TweenToTarget(Assassin))
+                        Functions.TweenToTarget(Assassin)
                         Functions.AdjustCamera(Assassin)
                         Functions.DisableCollisions()
                         Functions.StabEnemy(Assassin)
