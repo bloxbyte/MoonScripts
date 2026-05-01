@@ -85,7 +85,7 @@ function API:Register()
     } or {
         Topic = "Register",
         AccountType = self.Arguments[1],
-        MainAccount = self.Arguments[2],
+        Username = self.Arguments[2],
         AltsList = self.Arguments[4]
     }
 
