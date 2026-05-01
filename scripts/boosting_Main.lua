@@ -254,7 +254,7 @@ until Functions.AllAltsInGame()
 
 Objects["MainTab"] = Window:CreateTab("Main", "app-window")
 
-Objects["BoostingToggle"] = Tab:CreateToggle({
+Objects["BoostingToggle"] = Objects["MainTab"]:CreateToggle({
    Name = "Enable Boosting",
    CurrentValue = false,
    Flag = "Boosting_Nigger", 
