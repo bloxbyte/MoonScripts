@@ -89,6 +89,8 @@ function API:Register()
         AltsList = self.Arguments[4]
     }
 
+    print(Body)
+
     self:SendRequest("POST", Body)
 end
 
@@ -105,6 +107,7 @@ function API:SendRequest(Method, Body)
     if Response.Success then
         print("Successfully sent request.")
     else
+        print(Services.HttpService:JSONDecode(Response.Body))
         warn("Failed to send request.")
     end
 
