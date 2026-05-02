@@ -162,13 +162,11 @@ function Functions.DisableCollisions()
 end
 
 function Functions.StabEnemy(Name)
-	task.wait()
-
 	if Player.PlayerGui.ScreenGui.UI.Target.Visible then
 		local enemyHRP = Services.Workspace:FindFirstChild(Name) and Services.Workspace[Name]:FindFirstChild("HumanoidRootPart")
 
 		if enemyHRP and Player:DistanceFromCharacter(enemyHRP.Position) <= 6.1 then
-			Player.PlayerScripts.localknifehandler.HitCheck:Fire(Services.Workspace[Name])
+			mouse1click()
 		end
 	end
 end
