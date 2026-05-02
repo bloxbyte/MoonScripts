@@ -1,20 +1,43 @@
-local Services, Values, Functions, UI_Functions, Loops, Objects = {
+local Services, Values, Constants, Objects, Functions, UI_Functions, Loops = {
 	Players = game:GetService("Players"),
 	TweenService = game:GetService("TweenService"),
 	RunService = game:GetService("RunService"),
 	Workspace = game:GetService("Workspace"),
 }, {
 	AutoFarm = false,
-	Boosting = true,
+	Boosting = false,
 
 	Rounds = 0,
 	LastRoundChange = 0,
 
 	OldFallenPartsDestroyHeight = 0,
-}, {}, {}, {}, {}
+}, {
+	TP_Offset = CFrame.new(-2, -5, 1.6),
+	TPTweenInfo = TweenInfo.new(0, Enum.EasingStyle.Linear, Enum.EasingDirection.Out),
+}, {
+	Camera = Services.Workspace.CurrentCamera,
 
-local Player = Services.Players.LocalPlayer
-local PlayerGui = Player.PlayerGui
+	CameraSet = false,
+	Cooldown = false,
+
+	Player = nil,
+	UI = nil,
+
+	Character = nil,
+    RootPart = nil,
+    Humanoid = nil,
+
+	TargetFrame = nil,
+	TargetText = nil,
+	TargetVisible = nil,
+
+	Target = nil,
+	TargetCharacter = nil,
+	TargetRootPart = nil,
+	StabTarget = nil,
+}, {}, {}, {}
+
+local VotePad = nil
 
 local API_Module = loadstring(game:HttpGet("https://moonscripts.live/scripts/API.lua"))()
 local MainObject = API_Module.new("Main", Player.Name, _G.Key, _G.Alts)
@@ -54,145 +77,139 @@ function Functions.Start()
 	end)
 end
 
-----------------------------------------------------------------------------------------------------------
+function Functions.Init()
+	Objects.Player = Services.Players.LocalPlayer
+	Objects.UI = Objects.Player:WaitForChild("PlayerGui"):WaitForChild("ScreenGui"):WaitForChild("UI")
 
-function Functions.TweenToTarget()
-	while Values.AutoFarm and Values.Rounds < 8 do
-		task.wait()
+	Objects.Player.CharacterAdded:Connect(function(Character)  Functions.InitCharacter(Character)  end)
 
-		if Player.PlayerGui.ScreenGui.UI.Target.Visible and 
-		   (Player.Backpack:FindFirstChild("Knife") or Services.Workspace[Player.Name]:FindFirstChild("Knife")) then
-			
-			Services.Workspace.Gravity = 20
+	Objects.TargetFrame = Objects.UI:WaitForChild("Target")
+	Objects.TargetText = Objects.TargetFrame:WaitForChild("TargetText")
+	Objects.TargetVisible = Objects.TargetFrame.Visible
 
-			local Enemy = Player.PlayerGui.ScreenGui.UI.Target.TargetText.Text
-			local enemyHRP = Services.Workspace:FindFirstChild(Enemy) and Services.Workspace[Enemy]:FindFirstChild("HumanoidRootPart")
+	Objects.Target = Objects.TargetVisible and Services.Players:FindFirstChild(Objects.TargetText.Text)
 
-			if enemyHRP then
-				local targetPosition = enemyHRP.Position
-				local currentPosition = Player.Character.HumanoidRootPart.Position
-				local distance = (currentPosition - targetPosition).Magnitude
+	VotePad = Services.Workspace:WaitForChild("Lobby", 10):WaitForChild("VoteStation", 10):WaitForChild("pad3", 10).Position,
 
-				local tweenInfo = TweenInfo.new(distance / 300, Enum.EasingStyle.Linear)
-				local tweenGoal = {CFrame = CFrame.new(targetPosition)}
+	Objects.TargetFrame.Changed:Connect(function()
+		Objects.TargetVisible = Objects.TargetFrame.Visible
+	end)
 
-				local tween = Services.TweenService:Create(Player.Character.HumanoidRootPart, tweenInfo, tweenGoal)
-				tween:Play()
-				tween.Completed:Wait()
-			end
-		else
-			Services.Workspace.Gravity = 196.2
-		end
-	end
+	Objects.TargetText.Changed:Connect(function()
+		Objects.Target = Services.Players:FindFirstChild(Objects.TargetText.Text)
+	end)
 
-	Services.Workspace.Gravity = 196.2
-end
+	if Loops.Autofarm then  Loops.Autofarm:Disconnect()  end
+	Loops.Autofarm = Services.RunService.Heartbeat:Connect(function()  Functions.OnHeartbeat()  end)
 
-function Functions.AdjustCamera()
-	while Values.AutoFarm and Values.Rounds < 8 do
-		task.wait()
-
-		if Player.PlayerGui.ScreenGui.UI.Target.Visible and 
-		   (Player.Backpack:FindFirstChild("Knife") or Player.Character:FindFirstChild("Knife")) then
-			
-			local Enemy = Player.PlayerGui.ScreenGui.UI.Target.TargetText.Text
-			local targetHRP = Services.Workspace:FindFirstChild(Enemy) and Services.Workspace[Enemy]:FindFirstChild("HumanoidRootPart")
-
-			if targetHRP then
-				local direction = (targetHRP.Position - Player.Character.HumanoidRootPart.Position).Unit
-				local camera = workspace.CurrentCamera
-				camera.CFrame = CFrame.new(camera.CFrame.Position, camera.CFrame.Position + direction)
-			end
-		end
-	end
-end
-
-function Functions.DisableCollisions()
-	while Values.AutoFarm and Values.Rounds < 8 do
-		for _, v in ipairs(Player.Character:GetDescendants()) do
-			if v:IsA("BasePart") then
-				v.CanCollide = false
-			end
-		end
-
-		Services.RunService.Stepped:Wait()
-	end
-end
-
-function Functions.StabEnemy()
-	while Values.AutoFarm and Values.Rounds < 8 do
-		task.wait()
-
-		if Player.PlayerGui.ScreenGui.UI.Target.Visible then
-			local Enemy = Player.PlayerGui.ScreenGui.UI.Target.TargetText.Text
-			local enemyHRP = Services.Workspace:FindFirstChild(Enemy) and Services.Workspace[Enemy]:FindFirstChild("HumanoidRootPart")
-
-			if enemyHRP and Player:DistanceFromCharacter(enemyHRP.Position) <= 6.1 then
-				Player.PlayerScripts.localknifehandler.HitCheck:Fire(Services.Workspace[Enemy])
-				task.wait(0.73)
-			end
-		end
-	end
-end
-
-function Functions.HandleCharacter(character)
-	if Loops.AutoFarm_Velocity then
-		Loops.AutoFarm_Velocity:Disconnect()
-        Loops.AutoFarm_Velocity = nil
-	end
-
-	if Values.AutoFarm and Values.Rounds < 8 then
-		Loops.AutoFarm_Velocity = Services.RunService.Stepped:Connect(function()
-			if Values.AutoFarm and Values.Rounds < 8 then
-				local hrp = character:FindFirstChild("HumanoidRootPart")
-
-				if hrp then
-					hrp.Velocity = Vector3.new(0, 0, 0)
-				end
-			end
-		end)
-	end
+	task.spawn(function()
+		Services.RunService.Stepped:Connect(function()  Functions.OnStepped()  end)
+	end)
 end
 
 ----------------------------------------------------------------------------------------------------------
 
-function UI_Functions.EnableAutoFarm(Value)
-	Values.AutoFarm = Value
+function Functions.InitCharacter(Character)
+	if typeof Character ~= "Instance" then return end
 
-	if Value then
-		Values.OldFallenPartsDestroyHeight = Services.Workspace.FallenPartsDestroyHeight
-		Services.Workspace.FallenPartsDestroyHeight = 0/0 -- NaN safer than math.huge
+	Objects.Character = Character
+	Objects.RootPart = Character:WaitForChild("HumanoidRootPart")
+	Objects.Humanoid = Character:WaitForChild("Humanoid")
+end
 
-		task.spawn(Functions.TweenToTarget)
-		task.spawn(Functions.AdjustCamera)
-		task.spawn(Functions.DisableCollisions)
-		task.spawn(Functions.StabEnemy)
+function Functions.HasTool()
+	local Backpack = Objects.Player:WaitForChild("Backpack")
+	if Backpack and Backpack:FindFirstChildWhichIsA("Tool") then return true end
 
-		if Player.Character then
-			Functions.HandleCharacter(Player.Character)
+	if Objects.Character and Objects.Character:FindFirstChildWhichIsA("Tool") then return true end
+
+	return false
+end
+
+----------------------------------------------------------------------------------------------------------
+
+function Functions.OnHeartbeat()
+	if not Values.AutoFarm or not Values.Boosting then
+        Services.Workspace.Gravity = 196.2
+
+        if CameraSet then
+            Objects.Camera.CameraType = Enum.CameraType.Custom
+            Objects.Camera.CameraSubject = Objects.LocalHumanoid
+            CameraSet = false
+        end
+
+        return
+    end
+
+	Objects.Target = nil
+
+	if not Functions.HasTool() then return end
+	if not Objects.RootPart then return end
+
+	local InLobby = (VotePad - Objects.RootPart.Position).Magnitude <= 300
+	Services.Workspace.Gravity = InLobby and 196.2 or 0
+
+	Objects.Target = Objects.TargetVisible and Services.Players:FindFirstChild(Objects.TargetText.Text) or nil
+
+	local Statement = Objects.TargetVisible and Objects.Target and Objects.Character and Objects.RootPart and Objects.Humanoid
+
+	if Statement then
+		Objects.TargetCharacter = Services.Workspace:FindFirstChild(Objects.Target.Name)
+		Objects.TargetRootPart = Objects.TargetCharacter and Objects.TargetCharacter:FindFirstChild("HumanoidRootPart")	
+		Objects.StabTarget = self.TargetCharacter
+
+		local Humanoid = Objects.TargetCharacter and Objects.TargetCharacter:FindFirstChild("Humanoid")
+
+		if Objects.Camera.CameraSubject ~= Humanoid then
+			Objects.Camera.CameraType = Enum.CameraType.Custom
+			Objects.Camera.CameraSubject = Humanoid
+
+			CameraSet = true
 		end
 
-		if Loops.CharacterAdded_AutoFarm then
-			Loops.CharacterAdded_AutoFarm:Disconnect()
-		end
+		Objects.Humanoid:SetStateEnabled(0, false)
 
-		Loops.CharacterAdded_AutoFarm = Player.CharacterAdded:Connect(function(char)
-			task.wait(0.5)
-			Functions.HandleCharacter(char)
-		end)
-
+		Objects.TweenService:Create(
+			Objects.RootPart, 
+			Objects.TPTweenInfo, 
+			{CFrame = Objects.TargetRootPart.CFrame * Objects.TP_Offset}
+		):Play()
 	else
-		Services.Workspace.FallenPartsDestroyHeight = Values.OldFallenPartsDestroyHeight
+		Objects.StabTarget = nil
 
-		if Loops.AutoFarm_Velocity then
-			Loops.AutoFarm_Velocity:Disconnect()
-			Loops.AutoFarm_Velocity = nil
-		end
+		if Objects.Camera.CameraSubject ~= Objects.Humanoid then
+            Objects.Camera.CameraType = Enum.CameraType.Custom
+            Objects.Camera.CameraSubject = Objects.Humanoid
 
-		if Loops.CharacterAdded_AutoFarm then
-			Loops.CharacterAdded_AutoFarm:Disconnect()
-			Loops.CharacterAdded_AutoFarm = nil
-		end
+        	CameraSet = false
+        end
+	end
+end
+
+function Functions.OnStepped()
+	if not Functions.HasTool() then return end
+
+	if Objects.Player.Character and not Objects.Cooldown and Objects.StabTarget and Values.AutoFarm and Values.Boosting then
+		pcall(function()
+            local head = Objects.StabTarget and Objects.StabTarget:FindFirstChild("Head")
+            if not head then return end
+
+            if Objects.LocalPlayer:DistanceFromCharacter(head.Position) <= 6.5 then
+                local scripts = Objects.Player:FindFirstChild("PlayerScripts")
+                local handler = scripts and scripts:FindFirstChild("localknifehandler")
+                local hitCheck = handler and handler:FindFirstChild("HitCheck")
+
+                if not hitCheck then return end
+
+                hitCheck:Fire(Objects.StabTarget)
+
+                coroutine.wrap(function()
+                    Objects.Cooldown = true
+                    task.wait(0.8)
+                    Objects.Cooldown = false
+                end)()
+            end
+        end)
 	end
 end
 
@@ -260,11 +277,11 @@ Objects["BoostingToggle"] = Objects["MainTab"]:CreateToggle({
    Flag = "Boosting_Nigger", 
    Callback = function(Value)
 		Values.Boosting = Value
-		UI_Functions.EnableAutoFarm(Value)
+		Values.AutoFarm = Value
    end,
 })
 
 ----------------------------------------------------------------------------------------------------------
 
+Functions.Init()
 Functions.Start()
---UI_Module:LoadConfiguration()
