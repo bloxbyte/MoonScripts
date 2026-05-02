@@ -56,7 +56,7 @@ function Functions.Start()
 				Values.Rounds += 1
 				MainObject:Update("Rounds", Values.Rounds)
 
-				if Values.Rounds >= 9 then
+				if Values.Rounds == 9 then
 					Values.Rounds = 0
 					MainObject:Update("Rounds", Values.Rounds)
 
@@ -65,6 +65,14 @@ function Functions.Start()
 						task.wait()
 						UI_Functions.EnableAutoFarm(true)
 					end
+				elseif Values.Rounds == 8 then
+					local Target = Player.PlayerGui.ScreenGui.UI.Target
+
+					repeat 
+						task.wait()
+					until Target.Visible == true and Services.Players:FindFirstChild(Target.Text)
+
+					MainObject:Update("Target", Target.Text)
 				end
 			end
 		end
@@ -129,7 +137,7 @@ end
 ----------------------------------------------------------------------------------------------------------
 
 function Functions.OnHeartbeat()
-	if not Values.AutoFarm or not Values.Boosting then
+	if not Values.AutoFarm or not Values.Boosting or Values.Rounds == 8 then
         Services.Workspace.Gravity = 196.2
 
         if CameraSet then
@@ -189,7 +197,7 @@ end
 function Functions.OnStepped()
 	if not Functions.HasTool() then return end
 
-	if Objects.Player.Character and not Objects.Cooldown and Objects.StabTarget and Values.AutoFarm and Values.Boosting then
+	if Objects.Player.Character and not Objects.Cooldown and Objects.StabTarget and Values.AutoFarm and Values.Boosting and Values.Rounds < 8 then
 		pcall(function()
             local head = Objects.StabTarget and Objects.StabTarget:FindFirstChild("Head")
             if not head then return end
@@ -205,7 +213,7 @@ function Functions.OnStepped()
 
                 coroutine.wrap(function()
                     Objects.Cooldown = true
-					
+
                     task.wait(0.8)
                     Objects.Cooldown = false
                 end)()
