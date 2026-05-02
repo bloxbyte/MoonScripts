@@ -134,7 +134,7 @@ function Functions.OnHeartbeat()
 
         if CameraSet then
             Objects.Camera.CameraType = Enum.CameraType.Custom
-            Objects.Camera.CameraSubject = Objects.LocalHumanoid
+            Objects.Camera.CameraSubject = Objects.Humanoid
             CameraSet = false
         end
 
@@ -205,6 +205,7 @@ function Functions.OnStepped()
 
                 coroutine.wrap(function()
                     Objects.Cooldown = true
+					
                     task.wait(0.8)
                     Objects.Cooldown = false
                 end)()

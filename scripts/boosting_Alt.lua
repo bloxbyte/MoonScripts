@@ -121,7 +121,7 @@ function Functions.TweenToTarget(Name)
 			local currentPosition = Player.Character.HumanoidRootPart.Position
 			local distance = (currentPosition - targetPosition).Magnitude
 
-			local tweenInfo = TweenInfo.new(distance / 300, Enum.EasingStyle.Linear)
+			local tweenInfo = TweenInfo.new(0, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
 			local tweenGoal = {CFrame = CFrame.new(targetPosition)}
 
 			local tween = Services.TweenService:Create(Player.Character.HumanoidRootPart, tweenInfo, tweenGoal)
