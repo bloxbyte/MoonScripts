@@ -12,7 +12,7 @@ _G.Values = {
 
    InfectionAutoFarm = false,
    JuggernautAutoFarm = false,
-   FFAAutoFarm = false,
+   FFA_AutoFarm = false,
 
    Chams = false,
    TargetChams = false,
