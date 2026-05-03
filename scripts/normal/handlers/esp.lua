@@ -28,16 +28,6 @@ ESP_Module.getCharacter = function(plr)
     return plr and services.Workspace:FindFirstChild(plr.Name)
 end
 
-task.spawn(function()
-    while task.wait(0.5) do
-        Objects.Enemy.enabled = _G.Values.ESP
-        Objects.Enemy.box = _G.Values.BoxESP
-        Objects.Enemy.boxFill = _G.Values.BoxFillESP
-        Objects.Enemy.tracer = _G.Values.TracerESP
-        Objects.Enemy.name = _G.Values.NameESP
-    end
-end)
-
 ----------------------------------------------------------------------------------------------------------
 
 function Functions.Highlight(Player)
@@ -55,7 +45,7 @@ function Functions.Highlight(Player)
             Highlight.Adornee = Player.Character
         end
 
-        Player.CharacterAdded:Connect(function(character)
+        Connections[Player] = Player.CharacterAdded:Connect(function(character)
             Highlight.Adornee = character
         end)
     end
@@ -93,6 +83,12 @@ function Functions.CheckChams()
             end
         end
 
+        if #Objects.Storage:GetChildren() == 0 then
+            for _, player in pairs(Services.Players:GetPlayers()) do
+                Functions.Highlight(player)
+            end
+        end
+
         return
     end
 
@@ -115,12 +111,31 @@ Services.Players.PlayerRemoving:Connect(function(Player)
     if highlight then
         highlight:Destroy()
     end
+
+    if Connections[Player] then
+        Connections[Player]:Disconnect()
+        Connections[Player] = nil
+    end
 end)
 
 for _, player in pairs(Services.Players:GetPlayers()) do
     Functions.Highlight(player)
 end
 
-Loops.Chams = Services.RunService.Heartbeat:Connect(function()
-    Functions.CheckChams()
+----------------------------------------------------------------------------------------------------------
+
+task.spawn(function()
+    while task.wait(1) do
+        Functions.CheckChams()
+    end
+end)
+
+task.spawn(function()
+    while task.wait(0.5) do
+        Objects.Enemy.enabled = _G.Values.ESP
+        Objects.Enemy.box = _G.Values.BoxESP
+        Objects.Enemy.boxFill = _G.Values.BoxFillESP
+        Objects.Enemy.tracer = _G.Values.TracerESP
+        Objects.Enemy.name = _G.Values.NameESP
+    end
 end)

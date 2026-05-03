@@ -1,1 +1,868 @@
-hello there monkeys
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Discord / OG Meta Tags -->
+  <meta property="og:title" content="MoonScripts" />
+  <meta property="og:url" content="https://moonscripts.live" />
+  <meta property="og:description" content="A Roblox script hub built for performance." />
+  <meta property="og:type" content="website" />
+  <meta name="theme-color" content="#ffffff" />
+
+  <title>Moon Scripts</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      margin: 0; padding: 0; box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #050505;
+      --surface: rgba(255,255,255,0.04);
+      --border: rgba(255,255,255,0.08);
+      --border-hover: rgba(255,255,255,0.18);
+      --text: #ffffff;
+      --muted: rgba(255,255,255,0.45);
+      --subtle: rgba(255,255,255,0.18);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Outfit', sans-serif;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 0 2rem;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(5,5,5,0.7);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      letter-spacing: 0.01em;
+    }
+
+    .logo-mark {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #fff 30%, rgba(255,255,255,0.2));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .nav-center {
+      display: flex;
+      gap: 0.25rem;
+    }
+
+    .nav-center a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 400;
+      padding: 0.4rem 0.85rem;
+      border-radius: 8px;
+      transition: color 0.2s, background 0.2s;
+    }
+
+    .nav-center a:hover {
+      color: var(--text);
+      background: rgba(255,255,255,0.06);
+    }
+
+    .nav-cta {
+      background: #fff;
+      color: #000;
+      border: none;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 0.5rem 1.25rem;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .nav-cta:hover {
+      background: rgba(255,255,255,0.88);
+      transform: translateY(-1px);
+    }
+
+    #starfield {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 80px 2rem 2rem;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .hero-glow {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,0.055) 0%, transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      animation: pulseGlow 6s ease-in-out infinite;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 0.7; transform: translate(-50%, -50%) scale(1); }
+      50% { opacity: 1; transform: translate(-50%, -50%) scale(1.08); }
+    }
+
+    .moon-wrap {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: min(560px, 80vw);
+      opacity: 0;
+      animation: moonIn 1.4s cubic-bezier(0.22,1,0.36,1) 0.1s forwards;
+      pointer-events: none;
+    }
+
+    @keyframes moonIn {
+      from { opacity: 0; transform: translate(-50%, -46%) scale(0.92); }
+      to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    }
+
+    .moon-svg {
+      width: 100%;
+      height: auto;
+      animation: float 10s ease-in-out infinite;
+      filter: drop-shadow(0 0 90px rgba(255,255,255,0.05));
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-16px); }
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 0.3rem 0.9rem;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: 0.02em;
+      margin-bottom: 2rem;
+      position: relative;
+      z-index: 2;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.4s forwards;
+    }
+
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #fff;
+      opacity: 0.6;
+    }
+
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(5.5rem, 16vw, 14rem);
+      line-height: 0.9;
+      letter-spacing: 0.02em;
+      position: relative;
+      z-index: 2;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.55s forwards;
+    }
+
+    .hero-title .ghost {
+      display: block;
+      color: transparent;
+      -webkit-text-stroke: 1.5px rgba(255,255,255,0.2);
+    }
+
+    .hero-desc {
+      margin-top: 1.75rem;
+      font-size: 1rem;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 420px;
+      position: relative;
+      z-index: 2;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.7s forwards;
+    }
+
+    .hero-actions {
+      margin-top: 2.25rem;
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.85s forwards;
+    }
+
+    .btn-solid {
+      background: #fff;
+      color: #000;
+      border: none;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      padding: 0.75rem 1.75rem;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    }
+
+    .btn-solid:hover {
+      background: rgba(255,255,255,0.88);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(255,255,255,0.12);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      padding: 0.75rem 1.75rem;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s, transform 0.15s;
+    }
+
+    .btn-ghost:hover {
+      color: #fff;
+      border-color: rgba(255,255,255,0.35);
+      transform: translateY(-2px);
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      opacity: 0;
+      animation: fadeIn 1s ease 1.4s forwards;
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 36px;
+      background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.25));
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.4; }
+      50%       { opacity: 1; }
+    }
+
+    .section {
+      position: relative;
+      z-index: 1;
+      padding: 7rem 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      margin-bottom: 3.5rem;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--subtle);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.4rem, 5vw, 3.8rem);
+      line-height: 1;
+      letter-spacing: 0.03em;
+    }
+
+    .section-sub {
+      margin-top: 0.75rem;
+      font-size: 0.95rem;
+      font-weight: 300;
+      color: var(--muted);
+      max-width: 480px;
+      line-height: 1.7;
+    }
+
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: var(--border);
+      position: relative;
+      z-index: 1;
+    }
+
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+
+    .game-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.75rem;
+      transition: border-color 0.25s, background 0.25s, transform 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .game-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.04), transparent 60%);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .game-card:hover {
+      border-color: var(--border-hover);
+      background: rgba(255,255,255,0.06);
+      transform: translateY(-3px);
+    }
+
+    .game-card:hover::before { opacity: 1; }
+
+    .game-card.live-card {
+      border-color: rgba(255,255,255,0.14);
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1.5rem;
+    }
+
+    .card-icon {
+      width: 40px;
+      height: 40px;
+    }
+
+    .pill {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      padding: 0.25rem 0.7rem;
+      border-radius: 999px;
+    }
+
+    .pill-live {
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+    }
+
+    .pill-soon {
+      background: rgba(255,255,255,0.04);
+      color: var(--subtle);
+      border: 1px solid var(--border);
+    }
+
+    .card-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.65rem;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.4rem;
+    }
+
+    .card-desc {
+      font-size: 0.85rem;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.65;
+      margin-bottom: 1.25rem;
+    }
+
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .tag {
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--subtle);
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
+    }
+
+    .game-card.dim {
+      opacity: 0.38;
+    }
+
+    .feats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    .feat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.75rem;
+      transition: border-color 0.25s, background 0.25s;
+    }
+
+    .feat-card:hover {
+      border-color: var(--border-hover);
+      background: rgba(255,255,255,0.06);
+    }
+
+    .feat-icon {
+      width: 36px;
+      height: 36px;
+      margin-bottom: 1.1rem;
+      opacity: 0.8;
+    }
+
+    .feat-title {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .feat-desc {
+      font-size: 0.85rem;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .cta-section {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 8rem 2rem 10rem;
+      overflow: hidden;
+    }
+
+    .cta-inner {
+      position: relative;
+      z-index: 2;
+    }
+
+    .cta-glow {
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .cta-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3.5rem, 10vw, 9rem);
+      line-height: 0.9;
+      letter-spacing: 0.02em;
+      margin-bottom: 1.5rem;
+    }
+
+    .cta-desc {
+      font-size: 1rem;
+      font-weight: 300;
+      color: var(--muted);
+      max-width: 400px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.7;
+    }
+
+    .cta-btns {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: center;
+    }
+
+    footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .footer-right {
+      font-size: 0.78rem;
+      font-weight: 300;
+      color: var(--subtle);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+
+    .reveal.on {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 1.25rem; }
+      .nav-center { display: none; }
+      .hero { padding: 70px 1.25rem 2rem; }
+      .moon-wrap { width: 90vw; }
+      .section { padding: 5rem 1.25rem; }
+      .games-grid { grid-template-columns: 1fr; }
+      .feats-grid { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 1rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<svg id="starfield" xmlns="http://www.w3.org/2000/svg"></svg>
+
+<nav>
+  <div class="nav-logo">
+    Moon Scripts
+  </div>
+
+  <div class="nav-center">
+    <a href="#games">Games</a>
+    <a href="#features">Features</a>
+    <a href="#start">Get Started</a>
+  </div>
+
+  <button class="nav-cta" onclick="document.getElementById('start').scrollIntoView({behavior:'smooth'})">Get Script</button>
+</nav>
+
+<section class="hero" id="home">
+  <div class="hero-glow"></div>
+
+  <div class="moon-wrap">
+    <svg class="moon-svg" viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="mg" cx="36%" cy="32%" r="65%">
+          <stop offset="0%" stop-color="#2c2c2c"/>
+          <stop offset="50%" stop-color="#0e0e0e"/>
+          <stop offset="100%" stop-color="#000"/>
+        </radialGradient>
+        <radialGradient id="gg" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="rgba(255,255,255,0.08)"/>
+          <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+        </radialGradient>
+        <clipPath id="mc"><circle cx="300" cy="300" r="238"/></clipPath>
+      </defs>
+
+      <circle cx="300" cy="300" r="268" fill="url(#gg)"/>
+      <circle cx="300" cy="300" r="238" fill="url(#mg)" stroke="rgba(255,255,255,0.09)" stroke-width="1"/>
+
+      <g clip-path="url(#mc)">
+        <circle cx="175" cy="215" r="36" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+        <circle cx="175" cy="215" r="27" fill="rgba(0,0,0,0.6)"/>
+        <circle cx="375" cy="175" r="20" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+        <circle cx="375" cy="175" r="14" fill="rgba(0,0,0,0.5)"/>
+        <circle cx="275" cy="375" r="48" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+        <circle cx="275" cy="375" r="38" fill="rgba(0,0,0,0.55)"/>
+        <circle cx="435" cy="335" r="26" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+        <circle cx="435" cy="335" r="18" fill="rgba(0,0,0,0.48)"/>
+        <circle cx="148" cy="335" r="14" fill="rgba(0,0,0,0.38)"/>
+        <circle cx="338" cy="255" r="12" fill="rgba(0,0,0,0.32)"/>
+        <circle cx="215" cy="285" r="8" fill="rgba(0,0,0,0.3)"/>
+        <circle cx="408" cy="238" r="7" fill="rgba(0,0,0,0.3)"/>
+        <path d="M138 195 Q158 115 255 106" stroke="rgba(255,255,255,0.1)" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M155 225 Q170 150 260 138" stroke="rgba(255,255,255,0.04)" stroke-width="1" fill="none" stroke-linecap="round"/>
+      </g>
+
+      <ellipse cx="300" cy="300" rx="290" ry="78" stroke="rgba(255,255,255,0.045)" stroke-width="1" fill="none" transform="rotate(-18,300,300)"/>
+      <ellipse cx="300" cy="300" rx="310" ry="58" stroke="rgba(255,255,255,0.028)" stroke-width="1" fill="none" transform="rotate(28,300,300)"/>
+
+      <circle r="3" fill="rgba(255,255,255,0.7)">
+        <animateMotion dur="12s" repeatCount="indefinite">
+          <mpath href="#orb1"/>
+        </animateMotion>
+      </circle>
+      <path id="orb1" d="M300 300 m-290 0 a290 78 0 1 1 580 0 a290 78 0 1 1 -580 0" fill="none" transform="rotate(-18,300,300)"/>
+
+      <circle r="2" fill="rgba(255,255,255,0.4)">
+        <animateMotion dur="18s" repeatCount="indefinite" begin="4s">
+          <mpath href="#orb2"/>
+        </animateMotion>
+      </circle>
+      <path id="orb2" d="M300 300 m-310 0 a310 58 0 1 0 620 0 a310 58 0 1 0 -620 0" fill="none" transform="rotate(28,300,300)"/>
+    </svg>
+  </div>
+
+  <h1 class="hero-title">
+    <span>Moon</span>
+    <span class="ghost">Scripts</span>
+  </h1>
+
+  <p class="hero-desc">
+    A Roblox script hub built for performance.<br>
+    Assassin is now supported!
+  </p>
+
+  <div class="hero-actions">
+    <button class="btn-solid" onclick="document.getElementById('games').scrollIntoView({behavior:'smooth'})">View Scripts</button>
+    <button class="btn-ghost" onclick="document.getElementById('start').scrollIntoView({behavior:'smooth'})">How it works</button>
+  </div>
+
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<div class="section" id="games">
+  <div class="section-header reveal">
+    <p class="section-label">Supported Games</p>
+    <h2 class="section-title">Current Games</h2>
+    <p class="section-sub">A list of our current supported games.</p>
+  </div>
+
+  <div class="games-grid reveal">
+    <div class="game-card live-card">
+      <div class="card-top">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="white"><path d="M189-160q-60 0-102.5-43T42-307q0-9 1-18t3-18l84-336q14-54 57-87.5t98-33.5h390q55 0 98 33.5t57 87.5l84 336q2 9 3.5 18.5T919-306q0 61-43.5 103.5T771-160q-42 0-78-22t-54-60l-28-58q-5-10-15-15t-21-5H385q-11 0-21 5t-15 15l-28 58q-18 38-54 60t-78 22Zm3-80q19 0 34.5-10t23.5-27l28-57q15-31 44-48.5t63-17.5h190q34 0 63 18t45 48l28 57q8 17 23.5 27t34.5 10q28 0 48-18.5t21-46.5q0 1-2-19l-84-335q-7-27-28-44t-49-17H285q-28 0-49.5 17T208-659l-84 335q-2 6-2 18 0 28 20.5 47t49.5 19Zm376.5-291.5Q580-543 580-560t-11.5-28.5Q557-600 540-600t-28.5 11.5Q500-577 500-560t11.5 28.5Q523-520 540-520t28.5-11.5Zm80-80Q660-623 660-640t-11.5-28.5Q637-680 620-680t-28.5 11.5Q580-657 580-640t11.5 28.5Q603-600 620-600t28.5-11.5Zm0 160Q660-463 660-480t-11.5-28.5Q637-520 620-520t-28.5 11.5Q580-497 580-480t11.5 28.5Q603-440 620-440t28.5-11.5Zm80-80Q740-543 740-560t-11.5-28.5Q717-600 700-600t-28.5 11.5Q660-577 660-560t11.5 28.5Q683-520 700-520t28.5-11.5Zm-367 63Q370-477 370-490v-40h40q13 0 21.5-8.5T440-560q0-13-8.5-21.5T410-590h-40v-40q0-13-8.5-21.5T340-660q-13 0-21.5 8.5T310-630v40h-40q-13 0-21.5 8.5T240-560q0 13 8.5 21.5T270-530h40v40q0 13 8.5 21.5T340-460q13 0 21.5-8.5ZM480-480Z"/></svg>
+        <span class="pill pill-live">Live</span>
+      </div>
+      <div class="card-name">Assassin</div>
+      <div class="card-desc">Full script suite for Assassin. Dominate every round with precision-built tools.</div>
+      <div class="card-tags">
+        <span class="tag">Custom ESP Library</span>
+        <span class="tag">AutoFarm</span>
+        <span class="tag">Ghost Coin Farm</span>
+        <span class="tag">Silent Aim</span>
+        <span class="tag">Client Mods</span>
+      </div>
+    </div>
+
+    <div class="game-card dim">
+    <div class="card-top">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="white"><path d="M756-120 537-339l84-84 219 219-84 84Zm-552 0-84-84 276-276-68-68-28 28-51-51v82l-28 28-121-121 28-28h82l-50-50 142-142q20-20 43-29t47-9q24 0 47 9t43 29l-92 92 50 50-28 28 68 68 90-90q-4-11-6.5-23t-2.5-24q0-59 40.5-99.5T701-841q15 0 28.5 3t27.5 9l-99 99 72 72 99-99q7 14 9.5 27.5T841-701q0 59-40.5 99.5T701-561q-12 0-24-2t-23-7L204-120Z"/></svg>
+        <span class="pill pill-soon">Coming Soon</span>
+    </div>
+    <div class="card-name">Coming Soon</div>
+    <div class="card-desc">This game is currently under development. Stay tuned for the announcement.</div>
+    <div class="card-tags">
+        <span class="tag">???</span>
+    </div>
+    </div>
+
+    <div class="game-card dim">
+    <div class="card-top">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="white"><path d="M756-120 537-339l84-84 219 219-84 84Zm-552 0-84-84 276-276-68-68-28 28-51-51v82l-28 28-121-121 28-28h82l-50-50 142-142q20-20 43-29t47-9q24 0 47 9t43 29l-92 92 50 50-28 28 68 68 90-90q-4-11-6.5-23t-2.5-24q0-59 40.5-99.5T701-841q15 0 28.5 3t27.5 9l-99 99 72 72 99-99q7 14 9.5 27.5T841-701q0 59-40.5 99.5T701-561q-12 0-24-2t-23-7L204-120Z"/></svg>
+        <span class="pill pill-soon">Coming Soon</span>
+    </div>
+    <div class="card-name">Coming Soon</div>
+    <div class="card-desc">This game is currently under development. More titles are on the way.</div>
+    <div class="card-tags">
+        <span class="tag">???</span>
+    </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<div class="section" id="features">
+  <div class="section-header reveal">
+    <p class="section-label">Why Moon Scripts</p>
+    <h2 class="section-title">Built Different</h2>
+  </div>
+
+  <div class="feats-grid reveal">
+    <div class="feat-card">
+      <svg class="feat-icon" viewBox="0 0 36 36" fill="none">
+        <circle cx="18" cy="18" r="14" stroke="white" stroke-width="1.5"/>
+        <path d="M11 18 L16 23 L25 13" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="feat-title">Undetected</div>
+      <div class="feat-desc">Scripts are actively maintained and updated to stay ahead of every anti-cheat updates.</div>
+    </div>
+
+    <div class="feat-card">
+      <svg class="feat-icon" viewBox="0 0 36 36" fill="none">
+        <path d="M18 5 L21 13 L30 14 L23.5 20 L25.5 29 L18 25 L10.5 29 L12.5 20 L6 14 L15 13 Z" stroke="white" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
+      </svg>
+      <div class="feat-title">Carefully Built</div>
+      <div class="feat-desc">No bloat, no lag. Every single feature engineered with a clear purpose.</div>
+    </div>
+
+    <div class="feat-card">
+      <svg class="feat-icon" viewBox="0 0 36 36" fill="none">
+        <rect x="6" y="14" width="24" height="17" rx="2.5" stroke="white" stroke-width="1.5"/>
+        <path d="M12 14 L12 10 C12 7.8 13.8 6 16 6 L20 6 C22.2 6 24 7.8 24 10 L24 14" stroke="white" stroke-width="1.5"/>
+        <circle cx="18" cy="22.5" r="2.5" stroke="white" stroke-width="1.2"/>
+      </svg>
+      <div class="feat-title">Secure</div>
+      <div class="feat-desc">Zero data collected to ensure full privacy of our users.</div>
+    </div>
+
+    <div class="feat-card">
+      <svg class="feat-icon" viewBox="0 0 36 36" fill="none">
+        <polyline points="4,28 10,17 17,22 24,10 32,15" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+      <div class="feat-title">Always Growing</div>
+      <div class="feat-desc">New games, new features. Our script hub is constantly advancing.</div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<section class="cta-section" id="start">
+  <div class="cta-glow"></div>
+  <div class="cta-inner">
+    <p class="section-label" style="justify-content:center; margin-bottom:1.25rem;">Get Started</p>
+    <h2 class="cta-title reveal">Explore<br>My Moon</h2>
+    <p class="cta-desc reveal">Copy the script, paste into your executor and goon your meat.</p>
+    <div class="cta-btns reveal">
+      <button class="btn-solid">Get Script</button>
+      <button class="btn-ghost">Join Discord</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">
+    Moon Scripts
+  </div>
+  <div class="footer-right">2026 Moon Scripts. All rights reserved.</div>
+</footer>
+
+<script>
+  const svg = document.getElementById('starfield');
+  const W = window.innerWidth;
+  const H = Math.max(document.body.scrollHeight, 4000);
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  svg.setAttribute('width', W);
+  svg.setAttribute('height', H);
+
+  for (let i = 0; i < 200; i++) {
+    const x = Math.random() * W;
+    const y = Math.random() * H;
+    const r = Math.random() * 1.0 + 0.15;
+    const op = Math.random() * 0.4 + 0.06;
+    const dur = (Math.random() * 5 + 2).toFixed(1);
+    const del = (Math.random() * 8).toFixed(1);
+
+    const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    c.setAttribute('cx', x);
+    c.setAttribute('cy', y);
+    c.setAttribute('r', r);
+    c.setAttribute('fill', 'white');
+    c.setAttribute('opacity', op);
+
+    const a = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
+    a.setAttribute('attributeName', 'opacity');
+    a.setAttribute('values', `${op};${(op * 0.12).toFixed(3)};${op}`);
+    a.setAttribute('dur', dur + 's');
+    a.setAttribute('begin', del + 's');
+    a.setAttribute('repeatCount', 'indefinite');
+
+    c.appendChild(a);
+    svg.appendChild(c);
+  }
+
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('on');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
