@@ -39,7 +39,7 @@ local Services, Values, Constants, Objects, Functions, Loops = {
 
 local VotePad = nil
 
-local API_Module = loadstring(game:HttpGet("https://moonscripts.live/scripts/boosting/API.lua"))()
+local API_Module = loadstring(game:HttpGet("https://moonscripts.live/scripts/assassin/boosting/API.lua"))()
 local MainObject = API_Module.new("Main", Player.Name, _G.Key, _G.Alts)
 
 ----------------------------------------------------------------------------------------------------------

@@ -16,7 +16,7 @@ local Services, Values, Loops, Functions, Objects = {
 local Player = Services.Players.LocalPlayer
 local PlayerGui = Player.PlayerGui
 
-local API_Module = loadstring(game:HttpGet("https://moonscripts.live/scripts/boosting/API.lua"))()
+local API_Module = loadstring(game:HttpGet("https://moonscripts.live/scripts/assassin/boosting/API.lua"))()
 local AltObject = API_Module.new("Alt", Player.Name, _G.Key, _G.MainAccount)
 
 ----------------------------------------------------------------------------------------------------------
