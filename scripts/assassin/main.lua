@@ -37,7 +37,7 @@ loadstring(game:HttpGet("https://moonscripts.live/scripts/normal/handlers/esp.lu
 local UI_Module = loadstring(game:HttpGet("https://sirius.menu/rayfield"))()
 
 Objects["Window"] = UI_Module:CreateWindow({
-   Name = "MoonScripts - Boosting Bot",
+   Name = "MoonScripts - Assassin",
    Icon = 0, 
    LoadingTitle = "MoonScripts",
    LoadingSubtitle = "by idfk",
@@ -68,7 +68,7 @@ UI_Module:Notify({
 Objects["MainTab"] = Objects["Window"]:CreateTab("Main", "app-window")
 Objects["Client"] = Objects["Window"]:CreateTab("Client", "user")
 Objects["Auto"] = Objects["Window"]:CreateTab("Auto", "refresh-ccw")
-Objects["Misc"] = Objects["Window"]:CreateTab("Misc", "message-circle-question-mark")
+Objects["Misc"] = Objects["Window"]:CreateTab("Misc", "circle-question-mark")
 Objects["Settings"] = Objects["Window"]:CreateTab("Settings", "settings")
 
 ----------------------------------------------------------------------------------------------------------
