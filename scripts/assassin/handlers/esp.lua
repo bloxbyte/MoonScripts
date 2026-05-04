@@ -32,7 +32,7 @@ Objects.Enemy.name = false
 ESP_Module.Load()
 
 ESP_Module.getCharacter = function(plr)
-    return plr and services.Workspace:FindFirstChild(plr.Name)
+    return plr and Services.Workspace:FindFirstChild(plr.Name)
 end
 
 ----------------------------------------------------------------------------------------------------------
