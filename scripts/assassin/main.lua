@@ -1,31 +1,5 @@
 local Objects = {}
 
-_G.Values = {
-   AutoFarm = false,
-   SilentAim = false,
-   ESP = false,
-
-   FOV_Circle = false,
-   FOV_Radius = 100,
-   FOV_Color = Color3.fromRGB(255, 255, 255),
-   FOV_Thickness = 1,
-
-   InfectionAutoFarm = false,
-   JuggernautAutoFarm = false,
-   FFA_AutoFarm = false,
-
-   Chams = false,
-   TargetChams = false,
-
-   ChamsColor = Color3.fromRGB(255, 255, 255),
-   TargetChamsColor = Color3.fromRGB(255, 0, 0),
-
-   BoxESP = false,
-   BoxFillESP = false,
-   TracerESP = false,
-   NameESP = false,
-}
-
 ----------------------------------------------------------------------------------------------------------
 
 local UI_Module = loadstring(game:HttpGet("https://sirius.menu/rayfield"))()
