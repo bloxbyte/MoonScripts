@@ -28,12 +28,6 @@ _G.Values = {
 
 ----------------------------------------------------------------------------------------------------------
 
-loadstring(game:HttpGet("https://moonscripts.live/scripts/normal/handlers/autofarm.lua"))()
-loadstring(game:HttpGet("https://moonscripts.live/scripts/normal/handlers/silentaim.lua"))()
-loadstring(game:HttpGet("https://moonscripts.live/scripts/normal/handlers/esp.lua"))()
-
-----------------------------------------------------------------------------------------------------------
-
 local UI_Module = loadstring(game:HttpGet("https://sirius.menu/rayfield"))()
 
 Objects["Window"] = UI_Module:CreateWindow({
@@ -68,7 +62,7 @@ UI_Module:Notify({
 Objects["MainTab"] = Objects["Window"]:CreateTab("Main", "app-window")
 Objects["Client"] = Objects["Window"]:CreateTab("Client", "user")
 Objects["Auto"] = Objects["Window"]:CreateTab("Auto", "refresh-ccw")
-Objects["Misc"] = Objects["Window"]:CreateTab("Misc", "circle-question-mark")
+Objects["Misc"] = Objects["Window"]:CreateTab("Misc", "ellipsis")
 Objects["Settings"] = Objects["Window"]:CreateTab("Settings", "settings")
 
 ----------------------------------------------------------------------------------------------------------
@@ -214,3 +208,9 @@ Objects["FOVColor_Picker"] = Objects["MainTab"]:CreateColorPicker({
       _G.Values.FOV_Color = Value
    end
 })
+
+----------------------------------------------------------------------------------------------------------
+
+loadstring(game:HttpGet("https://moonscripts.live/scripts/normal/handlers/autofarm.lua"))()
+loadstring(game:HttpGet("https://moonscripts.live/scripts/normal/handlers/silentaim.lua"))()
+loadstring(game:HttpGet("https://moonscripts.live/scripts/normal/handlers/esp.lua"))()
