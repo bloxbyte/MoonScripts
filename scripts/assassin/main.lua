@@ -41,6 +41,9 @@ Objects["Settings"] = Objects["Window"]:CreateTab("Settings", "settings")
 
 ----------------------------------------------------------------------------------------------------------
 
-loadstring(game:HttpGet("https://moonscripts.live/scripts/assassin/handlers/esp.lua"))().Init(Objects["MainTab"])
-loadstring(game:HttpGet("https://moonscripts.live/scripts/assassin/handlers/silentaim.lua"))().Init(Objects["MainTab"])
+local ESP = loadstring(game:HttpGet("https://moonscripts.live/scripts/assassin/handlers/esp.lua"))()
+local SilentAim = loadstring(game:HttpGet("https://moonscripts.live/scripts/assassin/handlers/silentaim.lua"))()
 --loadstring(game:HttpGet("https://moonscripts.live/scripts/assassin/handlers/autofarm.lua"))()
+
+print(ESP)
+print(SilentAim)
