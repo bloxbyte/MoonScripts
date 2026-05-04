@@ -3,6 +3,7 @@ local Services, Objects, Constants, Functions = {
     Players = game:GetService("Players"),
     Workspace = game:GetService("Workspace"),
     TweenService = game:GetService("TweenService"),
+    ReplicatedStorage = game:GetService("ReplicatedStorage"),
 }, {
     Camera = Services.Workspace.CurrentCamera,
     VotePad = Services.Workspace:WaitForChild("Lobby", 10):WaitForChild("VoteStation", 10):WaitForChild("pad3", 10).Position,
@@ -193,6 +194,31 @@ function Functions.Init()
         _G.AutoFarmLoop:Disconnect()
         _G.AutoFarmLoop = nil
     end
+
+    if _G.GhostCoinsLoop then
+        _G.GhostCoinsLoop:Disconnect()
+        _G.GhostCoinsLoop = nil
+    end
+
+    _G.GhostCoinsLoop = Objects.Player.CharacterAdded:Connect(function()
+        if if _G.Values.GhostCoins == true then
+            Services.ReplicatedStorage.Remotes.RequestGhostSpawn:InvokeServer()
+        end
+
+        task.spawn(function()
+            Services.RunService.Heartbeat:Connect(function()
+                if _G.Values.GhostCoins == true then
+                    for i,v in pairs(Services.Workspace.GhostCoins:GetDescendants()) do
+                        if v:IsA("TouchTransmitter") then
+                            firetouchinterest(player.Character.HumanoidRootPart, v.Parent, 0) 
+                            task.wait()
+                            firetouchinterest(player.Character.HumanoidRootPart, v.Parent, 1)
+                        end 
+                    end
+                end
+            end)
+        end)
+    end)
 
     _G.AutoFarmLoop = Services.RunService.Heartbeat:Connect(function()  Functions.OnHeartbeat()  end)
 

@@ -1,4 +1,4 @@
-local ESP_Module = loadstring(game:HttpGet("https://moonscripts.live/scripts/normal/libraries/esp.lua"))()
+local ESP_Module = loadstring(game:HttpGet("https://moonscripts.live/scripts/assassin/libraries/esp.lua"))()
 
 local Services, Objects, Functions, Loops = {
     Players = game:GetService("Players"),
@@ -53,8 +53,8 @@ end
 
 
 function Functions.GetTarget()
-    local TargetName = Objects.TargetText.Text
-    local Target = Services.Players:FindFirstChild(TargetName)
+    local TargetName = Objects.Players.LocalPlayer.PlayerGui:WaitForChild("ScreenGui"):WaitForChild("UI").Target.TargetText
+    local Target = Services.Players:FindFirstChild(TargetName.Text)
 
     return Target
 end
@@ -66,7 +66,7 @@ function Functions.CheckChams()
 
             if not Target then
                 for _, part in pairs(Objects.Storage:GetChildren()) do
-                    if part:IsA("Highlight") and part.FillColor == _G.Values.TargetChamsColor then
+                    if part:IsA("Highlight") and part.FillColor ~= _G.Values.ChamsColor then
                         part.FillColor = _G.Values.ChamsColor
                         part.OutlineColor = _G.Values.ChamsColor
                     end
@@ -86,6 +86,13 @@ function Functions.CheckChams()
         if #Objects.Storage:GetChildren() == 0 then
             for _, player in pairs(Services.Players:GetPlayers()) do
                 Functions.Highlight(player)
+            end
+        end
+
+        for _, part in pairs(Objects.Storage:GetChildren()) do
+            if part:IsA("Highlight") and part.FillColor ~= _G.Values.ChamsColor then
+                part.FillColor = _G.Values.ChamsColor
+                part.OutlineColor = _G.Values.ChamsColor
             end
         end
 
