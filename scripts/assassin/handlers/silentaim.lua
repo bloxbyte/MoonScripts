@@ -1,4 +1,4 @@
-local Services, Objects, Functions, Loops = {
+local Services, Objects, Values, Functions, Loops = {
     Players = game:GetService("Players"),
     Workspace = game:GetService("Workspace"),
     RunService = game:GetService("RunService"),
@@ -7,22 +7,81 @@ local Services, Objects, Functions, Loops = {
 
     Player = nil,
     Mouse = nil,
+}, {
+    SilentAim = false,
 }, {}, {}
 
-Objects.FOV_Circle.Color = _G.Values.FOV_Color
-Objects.FOV_Circle.Thickness = _G.Values.FOV_Thickness
-Objects.FOV_Circle.Radius = _G.Values.FOV_Size
-Objects.FOV_Circle.Visible = _G.Values.FOV_Circle
+Objects.FOV_Circle.Color = Color3.fromRGB(255,255,255)
+Objects.FOV_Circle.Thickness = 1
+Objects.FOV_Circle.Radius = 100
+Objects.FOV_Circle.Visible = false
 Objects.FOV_Circle.Filled = false
 
 ----------------------------------------------------------------------------------------------------------
 
-function Functions.Init()
+function Functions.Init(Tab)
     Objects.Player = Services.Players.LocalPlayer
     Objects.Mouse = Objects.Player:GetMouse()
 
+    Objects["SilentAim_Section"] = Objects["MainTab"]:CreateSection("Silent Aim")
+
+    Objects["SilentAim_Toggle"] = Objects["MainTab"]:CreateToggle({
+        Name = "Silent Aim",
+        CurrentValue = false,
+        Flag = "SilentAim_Toggle",
+        Callback = function(Value)
+            Values.SilentAim = Value
+        end,
+    })
+
+    Objects["FOVCircle_Toggle"] = Objects["MainTab"]:CreateToggle({
+        Name = "FOV Circle",
+        CurrentValue = false,
+        Flag = "FOVCircle_Toggle",
+        Callback = function(Value)
+            Objects.FOV_Circle.Visible = Value
+        end,
+    })
+
+    Objects["FOVSize_Slider"] = Objects["MainTab"]:CreateSlider({
+        Name = "FOV Circle Size",
+        Range = {50, 250},
+        Increment = 2,
+        Suffix = "Circle Size",
+        CurrentValue = 100,
+        Flag = "FOVSize_Slider", 
+        Callback = function(Value)
+            Objects.FOV_Circle.Radius = Value
+        end,
+    })
+
+    Objects["FOVThickness_Slider"] = Objects["MainTab"]:CreateSlider({
+        Name = "FOV Thickness Size",
+        Range = {1, 5},
+        Increment = 1,
+        Suffix = "Circle Thickness",
+        CurrentValue = 1,
+        Flag = "FOVThickness_Slider", 
+        Callback = function(Value)
+            Objects.FOV_Circle.Thickness = Value
+        end,
+    })
+
+    Objects["FOVColor_Picker"] = Objects["MainTab"]:CreateColorPicker({
+        Name = "FOV Circle Color",
+        Color = Color3.fromRGB(255,255,255),
+        Flag = "FOVColor_Picker", 
+        Callback = function(Value)
+            Objects.FOV_Circle.Color = Value
+        end
+    })
+
     services.RunService.Heartbeat:connect(function()
-        if _G.Values.SilentAim then
+        if Objects.FOV_Circle.Visible == true then
+           Objects.FOV_Circle.Position = Vector2.new(Objects.Mouse.X, Objects.Mouse.Y + 37)
+        end
+
+        if Values.SilentAim then
             local ClosestToMouse = Functions.ClosestPlayerToMouse()
 
             if ClosestToMouse then
@@ -73,13 +132,4 @@ end
 
 ----------------------------------------------------------------------------------------------------------
 
-Functions.Init()
-
-task.spawn(function()
-    while task.wait(1) do
-        Objects.FOV_Circle.Color = _G.Values.FOV_Color
-        Objects.FOV_Circle.Thickness = _G.Values.FOV_Thickness
-        Objects.FOV_Circle.Radius = _G.Values.FOV_Size
-        Objects.FOV_Circle.Visible = _G.Values.FOV_Circle
-    end
-end)
+return Functions
