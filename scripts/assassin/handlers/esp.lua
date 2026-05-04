@@ -133,9 +133,9 @@ end
 ----------------------------------------------------------------------------------------------------------
 
 function Functions.Init(MainTab)
-    Objects["ESP_Section"] = Objects["MainTab"]:CreateSection("ESP")
+    Objects["ESP_Section"] = MainTab:CreateSection("ESP")
 
-    Objects["PlayerESP_Toggle"] = Objects["MainTab"]:CreateToggle({
+    Objects["PlayerESP_Toggle"] = MainTab:CreateToggle({
         Name = "Player ESP",
         CurrentValue = false,
         Flag = "PlayerESP_Toggle",
@@ -144,7 +144,7 @@ function Functions.Init(MainTab)
         end,
     })
 
-    Objects["BoxESP_Toggle"] = Objects["MainTab"]:CreateToggle({
+    Objects["BoxESP_Toggle"] = MainTab:CreateToggle({
         Name = "Box ESP",
         CurrentValue = false,
         Flag = "BoxESP_Toggle",
@@ -153,7 +153,7 @@ function Functions.Init(MainTab)
         end,
     })
 
-    Objects["BoxFillESP_Toggle"] = Objects["MainTab"]:CreateToggle({
+    Objects["BoxFillESP_Toggle"] = MainTab:CreateToggle({
         Name = "Box Fill ESP",
         CurrentValue = false,
         Flag = "BoxFillESP_Toggle",
@@ -162,7 +162,7 @@ function Functions.Init(MainTab)
         end,
     })
 
-    Objects["NameESP_Toggle"] = Objects["MainTab"]:CreateToggle({
+    Objects["NameESP_Toggle"] = MainTab:CreateToggle({
         Name = "Name ESP",
         CurrentValue = false,
         Flag = "NameESP_Toggle",
@@ -171,7 +171,7 @@ function Functions.Init(MainTab)
         end,
     })
 
-    Objects["TracerESP_Toggle"] = Objects["MainTab"]:CreateToggle({
+    Objects["TracerESP_Toggle"] = MainTab:CreateToggle({
         Name = "Tracer ESP",
         CurrentValue = false,
         Flag = "TracerESP_Toggle",
@@ -180,9 +180,9 @@ function Functions.Init(MainTab)
         end,
     })
 
-    Objects["Chams_Section"] = Objects["MainTab"]:CreateSection("Chams")
+    Objects["Chams_Section"] = MainTab:CreateSection("Chams")
 
-    Objects["NormalChams_Toggle"] = Objects["MainTab"]:CreateToggle({
+    Objects["NormalChams_Toggle"] = MainTab:CreateToggle({
         Name = "Player Chams",
         CurrentValue = false,
         Flag = "NormalChams_Toggle",
@@ -195,7 +195,7 @@ function Functions.Init(MainTab)
         end,
     })
 
-    Objects["TargetChams_Toggle"] = Objects["MainTab"]:CreateToggle({
+    Objects["TargetChams_Toggle"] = MainTab:CreateToggle({
         Name = "Target Chams",
         CurrentValue = false,
         Flag = "TargetChams_Toggle",
@@ -204,7 +204,7 @@ function Functions.Init(MainTab)
         end,
     })
 
-    Objects["PlayerChams_Picker"] = Objects["MainTab"]:CreateColorPicker({
+    Objects["PlayerChams_Picker"] = MainTab:CreateColorPicker({
         Name = "Player Chams Color",
         Color = Color3.fromRGB(255,255,255),
         Flag = "PlayerChams_Picker", 
@@ -213,7 +213,7 @@ function Functions.Init(MainTab)
         end
     })
 
-    Objects["TargetChams_Picker"] = Objects["MainTab"]:CreateColorPicker({
+    Objects["TargetChams_Picker"] = MainTab:CreateColorPicker({
         Name = "Target Chams Color",
         Color = Color3.fromRGB(255,0,0),
         Flag = "TargetChams_Picker", 

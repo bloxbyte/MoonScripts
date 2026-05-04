@@ -23,9 +23,9 @@ function Functions.Init(Tab)
     Objects.Player = Services.Players.LocalPlayer
     Objects.Mouse = Objects.Player:GetMouse()
 
-    Objects["SilentAim_Section"] = Objects["MainTab"]:CreateSection("Silent Aim")
+    Objects["SilentAim_Section"] = MainTab:CreateSection("Silent Aim")
 
-    Objects["SilentAim_Toggle"] = Objects["MainTab"]:CreateToggle({
+    Objects["SilentAim_Toggle"] = MainTab:CreateToggle({
         Name = "Silent Aim",
         CurrentValue = false,
         Flag = "SilentAim_Toggle",
@@ -34,7 +34,7 @@ function Functions.Init(Tab)
         end,
     })
 
-    Objects["FOVCircle_Toggle"] = Objects["MainTab"]:CreateToggle({
+    Objects["FOVCircle_Toggle"] = MainTab:CreateToggle({
         Name = "FOV Circle",
         CurrentValue = false,
         Flag = "FOVCircle_Toggle",
@@ -43,7 +43,7 @@ function Functions.Init(Tab)
         end,
     })
 
-    Objects["FOVSize_Slider"] = Objects["MainTab"]:CreateSlider({
+    Objects["FOVSize_Slider"] = MainTab:CreateSlider({
         Name = "FOV Circle Size",
         Range = {50, 250},
         Increment = 2,
@@ -55,7 +55,7 @@ function Functions.Init(Tab)
         end,
     })
 
-    Objects["FOVThickness_Slider"] = Objects["MainTab"]:CreateSlider({
+    Objects["FOVThickness_Slider"] = MainTab:CreateSlider({
         Name = "FOV Thickness Size",
         Range = {1, 5},
         Increment = 1,
@@ -67,7 +67,7 @@ function Functions.Init(Tab)
         end,
     })
 
-    Objects["FOVColor_Picker"] = Objects["MainTab"]:CreateColorPicker({
+    Objects["FOVColor_Picker"] = MainTab:CreateColorPicker({
         Name = "FOV Circle Color",
         Color = Color3.fromRGB(255,255,255),
         Flag = "FOVColor_Picker", 
