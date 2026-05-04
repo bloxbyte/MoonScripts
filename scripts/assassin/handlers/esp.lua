@@ -7,9 +7,9 @@ local Services, Objects, Values, Functions, Loops = {
     Workspace = game:GetService("Workspace"),
 }, {
     Camera = workspace.CurrentCamera,
-    Enemy = ESP_Module.teamSettings.enemy
+    Enemy = ESP_Module.teamSettings.enemy,
 
-    Storage = Instance.new("Folder", Services.CoreGui),
+    Storage = Instance.new("Folder")
 }, {
     Chams = false,
     TargetChams = false,
@@ -19,6 +19,7 @@ local Services, Objects, Values, Functions, Loops = {
 }, {}, {}
 
 Objects.Storage.Name = "Highlight_Storage"
+Objects.Storage.Parent = Services.CoreGui
 
 ----------------------------------------------------------------------------------------------------------
 
@@ -255,7 +256,7 @@ Services.RunService.Heartbeat:Connect(function()
 
                                 if Loops[Highlight.Name] ~= nil then
                                     Loops[Highlight.Name]:Disconnect()
-                                    Loops[Highlight.Name].nil
+                                    Loops[Highlight.Name] = nil
                                 end
                             end
                         end
