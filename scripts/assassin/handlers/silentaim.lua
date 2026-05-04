@@ -90,7 +90,7 @@ function Functions.Init(Tab)
                 task.wait(0.05)
 
                 for i,v in pairs(services.Workspace.KnifeHost:GetDescendants()) do
-                    if v:IsA("Part") and _G.Values.SilentAim == true then
+                    if v:IsA("Part") and Values.SilentAim == true then
                         v.CFrame = ClosestToMouse.Head.CFrame
                     end
                 end
