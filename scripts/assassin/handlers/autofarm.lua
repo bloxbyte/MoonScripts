@@ -5,8 +5,8 @@ local Services, Objects, Constants, Functions = {
     TweenService = game:GetService("TweenService"),
     ReplicatedStorage = game:GetService("ReplicatedStorage"),
 }, {
-    Camera = Services.Workspace.CurrentCamera,
-    VotePad = Services.Workspace:WaitForChild("Lobby", 10):WaitForChild("VoteStation", 10):WaitForChild("pad3", 10).Position,
+    Camera = workspace.CurrentCamera,
+    VotePad = workspace:WaitForChild("Lobby", 10):WaitForChild("VoteStation", 10):WaitForChild("pad3", 10).Position,
     
     Player = nil, 
     Character = nil,
@@ -46,8 +46,13 @@ local GameModes, ModeMessages = {
     ["You are Infected! Hunt the surviving players."]  = "Infected",
 }
 
-local FFC = function(instance, name) return instance:FindFirstChild(name) end,
-local FFCWhichIsA = function(instance, class) return instance:FindFirstChildWhichIsA(class) end,
+local function FFC(instance, name)
+    return instance:FindFirstChild(name)
+end
+
+local function FFCWhichIsA(instance, class)
+    return instance:FindFirstChildWhichIsA(class)
+end
 
 ----------------------------------------------------------------------------------------------------------
 
@@ -201,7 +206,7 @@ function Functions.Init()
     end
 
     _G.GhostCoinsLoop = Objects.Player.CharacterAdded:Connect(function()
-        if if _G.Values.GhostCoins == true then
+        if _G.Values.GhostCoins == true then
             Services.ReplicatedStorage.Remotes.RequestGhostSpawn:InvokeServer()
         end
 

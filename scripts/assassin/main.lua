@@ -211,6 +211,6 @@ Objects["FOVColor_Picker"] = Objects["MainTab"]:CreateColorPicker({
 
 ----------------------------------------------------------------------------------------------------------
 
-loadstring(game:HttpGet("https://moonscripts.live/scripts/normal/handlers/autofarm.lua"))()
-loadstring(game:HttpGet("https://moonscripts.live/scripts/normal/handlers/silentaim.lua"))()
-loadstring(game:HttpGet("https://moonscripts.live/scripts/normal/handlers/esp.lua"))()
+loadstring(game:HttpGet("https://moonscripts.live/scripts/assassin/handlers/autofarm.lua"))()
+loadstring(game:HttpGet("https://moonscripts.live/scripts/assassin/handlers/silentaim.lua"))()
+loadstring(game:HttpGet("https://moonscripts.live/scripts/assassin/handlers/esp.lua"))()
