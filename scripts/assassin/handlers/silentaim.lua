@@ -5,6 +5,8 @@ local Services, Objects, Values, Functions, Loops = {
 }, {
     FOV_Circle = Drawing.new("Circle"),
 
+    Camera = workspace.CurrentCamera,
+
     Player = nil,
     Mouse = nil,
 }, {
@@ -105,20 +107,20 @@ function Functions.ClosestPlayerToMouse()
     local closest = nil
     local distance = 9e9
 
-    for _, p in pairs(services.Players:GetPlayers()) do
+    for _, p in pairs(Services.Players:GetPlayers()) do
         if p ~= player then
-            local character = services.Workspace:FindFirstChild(p.Name)
+            local character = Services.Workspace:FindFirstChild(p.Name)
 
             if character then
                 local head = character:FindFirstChild("HumanoidRootPart")
 
                 if head then
-                    local screenPos, onScreen = Camera:WorldToScreenPoint(head.Position)
+                    local screenPos, onScreen = Objects.Camera:WorldToScreenPoint(head.Position)
 
                     if onScreen then
-                        local magnitude = (Vector2.new(screenPos.X, screenPos.Y) - Vector2.new(Mouse.X, Mouse.Y)).Magnitude
+                        local magnitude = (Vector2.new(screenPos.X, screenPos.Y) - Vector2.new(Objects.Mouse.X, Objects.Mouse.Y)).Magnitude
 
-                        if magnitude < distance and magnitude < components["FOV_Circle"].Radius then
+                        if magnitude < distance and magnitude < Objects.FOV_Circle.Radius then
                             closest = character
                             distance = magnitude
                         end
