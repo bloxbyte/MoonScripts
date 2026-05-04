@@ -79,9 +79,9 @@ function Functions.Init(Tab)
     })
 
     services.RunService.Heartbeat:connect(function()
-        --[[if Objects.FOV_Circle.Visible == true then
+        if Objects.FOV_Circle.Visible then
            Objects.FOV_Circle.Position = Vector2.new(Objects.Mouse.X, Objects.Mouse.Y + 37)
-        end]]--
+        end
 
         if Values.SilentAim then
             local ClosestToMouse = Functions.ClosestPlayerToMouse()
