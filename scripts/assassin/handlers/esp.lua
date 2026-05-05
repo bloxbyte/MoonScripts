@@ -1,4 +1,4 @@
-local ESP_Module = loadstring(game:HttpGet("https://moonscripts.live/scripts/assassin/libraries/esp.lua"))()
+local ESP_Module = loadstring(game:HttpGet("https://gist.githubusercontent.com/LuvNarcc/0bae8ec0f5ff7a40af447a3520dc029d/raw/fb3a9620e26247e70546704af3fa08c419ce4b4d/Assassin-ESP.lua"))()
 
 local Services, Objects, Values, Functions, Loops = {
     Players = game:GetService("Players"),
@@ -7,8 +7,6 @@ local Services, Objects, Values, Functions, Loops = {
     Workspace = game:GetService("Workspace"),
 }, {
     Camera = workspace.CurrentCamera,
-    Enemy = ESP_Module.teamSettings.enemy,
-
     Storage = Instance.new("Folder")
 }, {
     Chams = false,
@@ -21,19 +19,7 @@ local Services, Objects, Values, Functions, Loops = {
 Objects.Storage.Name = "Highlight_Storage"
 Objects.Storage.Parent = Services.CoreGui
 
-----------------------------------------------------------------------------------------------------------
-
-Objects.Enemy.enabled = false
-Objects.Enemy.box = false
-Objects.Enemy.boxFill = false
-Objects.Enemy.tracer = false
-Objects.Enemy.name = false
-
-ESP_Module.Load()
-
-ESP_Module.getCharacter = function(plr)
-    return plr and Services.Workspace:FindFirstChild(plr.Name)
-end
+ESP_Module.Cfg.FPS = 40
 
 ----------------------------------------------------------------------------------------------------------
 
@@ -55,55 +41,6 @@ function Functions.Highlight(Player)
         Loops[Player] = Player.CharacterAdded:Connect(function(character)
             Highlight.Adornee = character
         end)
-    end
-end
-
-
-function Functions.GetTarget()
-    local TargetName = Objects.Players.LocalPlayer.PlayerGui:WaitForChild("ScreenGui"):WaitForChild("UI").Target.TargetText
-    local Target = Services.Players:FindFirstChild(TargetName.Text)
-
-    return Target
-end
-
-function Functions.CheckChams() 
-    if Values.Chams then
-        if Values.TargetChams then
-            local Target = Functions.GetTarget()
-
-            if not Target then
-                for _, part in pairs(Objects.Storage:GetChildren()) do
-                    if part:IsA("Highlight") and part.FillColor ~= _G.Values.ChamsColor then
-                        part.FillColor = _G.Values.ChamsColor
-                        part.OutlineColor = _G.Values.ChamsColor
-                    end
-                end
-            end
-
-            if Objects.Storage:FindFirstChild(Target) and Objects.Storage:FindFirstChild(Target).IsA("Highlight") then
-                local Highlight = Objects.Storage:FindFirstChild(Target)
-
-                if Highlight.FillColor ~= Values.TargetChamsColor then
-                    Highlight.FillColor = Values.TargetChamsColor
-                    Highlight.OutlineColor = Values.TargetChamsColor
-                end
-            end
-        end
-
-        for _, part in pairs(Objects.Storage:GetChildren()) do
-            if part:IsA("Highlight") and part.FillColor ~= Values.ChamsColor then
-                part.FillColor = Values.ChamsColor
-                part.OutlineColor = Values.ChamsColor
-            end
-        end
-
-        return
-    end
-
-    for _, part in pairs(Objects.Storage:GetChildren()) do
-        if part:IsA("Highlight") then
-            part:Destroy()
-        end
     end
 end
 
@@ -140,7 +77,7 @@ function Functions.Init(MainTab)
         CurrentValue = false,
         Flag = "PlayerESP_Toggle",
         Callback = function(Value)
-            Objects.Enemy.enabled = Value
+            ESP_Module.Cfg.Enabled = Value
         end,
     })
 
@@ -149,16 +86,16 @@ function Functions.Init(MainTab)
         CurrentValue = false,
         Flag = "BoxESP_Toggle",
         Callback = function(Value)
-            Objects.Enemy.box = Value
+            ESP_Module.Cfg.Boxes = Value
         end,
     })
 
-    Objects["BoxFillESP_Toggle"] = MainTab:CreateToggle({
-        Name = "Box Fill ESP",
+    Objects["SkeletonESP_Toggle"] = MainTab:CreateToggle({
+        Name = "Skeleton ESP",
         CurrentValue = false,
-        Flag = "BoxFillESP_Toggle",
+        Flag = "SkeletonESP_Toggle",
         Callback = function(Value)
-            Objects.Enemy.boxFill = Value
+            ESP_Module.Cfg.Skeleton = Value
         end,
     })
 
@@ -167,7 +104,7 @@ function Functions.Init(MainTab)
         CurrentValue = false,
         Flag = "NameESP_Toggle",
         Callback = function(Value)
-            Objects.Enemy.name = Value
+            ESP_Module.Cfg.Names = Value
         end,
     })
 
@@ -176,7 +113,7 @@ function Functions.Init(MainTab)
         CurrentValue = false,
         Flag = "TracerESP_Toggle",
         Callback = function(Value)
-            Objects.Enemy.tracer = Value
+            ESP_Module.Cfg.Tracers = Value
         end,
     })
 
@@ -189,7 +126,7 @@ function Functions.Init(MainTab)
         Callback = function(Value)
             Values.Chams = Value
 
-            for i, player in ipairs(Players:GetPlayers()) do
+            for i, player in ipairs(Services.Players:GetPlayers()) do
                 Functions.Highlight(player)
             end
         end,
